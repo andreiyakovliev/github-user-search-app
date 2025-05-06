@@ -1,0 +1,234 @@
+@use "sass:math"; // Підключення бібліотек
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Підключення загальних віддалених шрифтів (Google Fonts)
+
+@import url('https://fonts.googleapis.com/css2?family=Space%20Mono:wght@400;700&display=swap');
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Стилі тега BODY
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+body {
+	min-width: #{$minWidth}px;
+	color: $mainColor;
+	font-family: $fontFamily;
+	font-size: #{$fontSize}px;
+
+	background: #f2f2f2;
+
+	// Скролл заблоковано
+	[data-fls-scrolllock] & {
+		overflow: hidden;
+		touch-action: none;
+		overscroll-behavior: none;
+	}
+
+	// Сайт завантажений
+	[data-fls-loaded] & {}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Оболонка WRAPPER
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: clip;
+
+	// Притискаємо footer
+	>main {
+		flex: 1 1 auto;
+	}
+
+	// Фікс для слайдерів
+	>* {
+		min-width: 0;
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Обмежуючий контейнер
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Стилі будуть застосовуватись до
+// всіх класів, що містять *__container
+// Наприклад header__container, main__container і т.п.
+// Сніппет (HTML): cnt
+
+@if ($responsiveType==1) {
+
+	// Чуйна
+	[class*="__container"] {
+		@if ($maxWidthContainer>0) {
+			max-width: #{$containerWidth}px;
+			margin: 0 auto;
+		}
+
+		@if ($containerPadding>0) {
+			@if ($maxWidthContainer>0) {
+				padding-left: #{math.div($containerPadding, 2)}px;
+				padding-right: #{math.div($containerPadding, 2)}px;
+			}
+
+			@else {
+				@include adaptiveValue("padding-left", math.div($containerPadding, 2), 15);
+				@include adaptiveValue("padding-right", math.div($containerPadding, 2), 15);
+			}
+		}
+	}
+}
+
+@else {
+
+	// Брейк-поїнтами
+	[class*="__container"] {
+		margin: 0 auto;
+
+		@if ($maxWidthContainer>0) {
+			max-width: #{$containerWidth}px;
+		}
+
+		@else {
+			@if ($containerPadding>0) {
+				padding-left: #{math.div($containerPadding, 2)}px;
+				padding-right: #{math.div($containerPadding, 2)}px;
+			}
+		}
+
+		@media (max-width: toEm($pc)) {
+			max-width: 970px;
+		}
+
+		@media (max-width: toEm($tablet)) {
+			max-width: 750px;
+		}
+
+		@media (max-width: toEm($mobile)) {
+			max-width: none;
+
+			@if ($containerPadding>0 and $maxWidthContainer>0) {
+				padding-left: #{math.div($containerPadding, 2)}px;
+				padding-right: #{math.div($containerPadding, 2)}px;
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Загальні стилі для усього сайту
+
+//=============== Typography ===============//
+
+
+.title {
+	font-family: $fontFamily;
+	color: $title;
+	font-weight: 700;
+
+	@include adaptiveValue("font-size", 26, 16, 0, 573, 375);
+	@include adaptiveValue("line-height", 39, 24, 0, 573, 375);
+
+	&--secondary {
+		color: $text-secondary;
+		font-size: 13px;
+		line-height: 19px;
+		letter-spacing: 2.5px;
+	}
+
+	&--section {
+		text-transform: uppercase;
+
+		@include adaptiveValue("font-size", 22, 16, 0, 573, 375);
+		@include adaptiveValue("line-height", 33, 24, 0, 573, 375);
+	}
+
+	&--logo {
+		color: $logo-primary;
+		font-size: 26px;
+		line-height: 39px;
+	}
+
+	&--button {
+		color: $button;
+
+		@include adaptiveValue("font-size", 16, 14, 0, 573, 375);
+		@include adaptiveValue("line-height", 24, 21, 0, 573, 375);
+	}
+}
+
+
+
+.text {
+	font-family: $fontFamily;
+	color: $mainColor;
+	font-weight: 400;
+	line-height: 25px;
+	letter-spacing: 0px;
+	text-align: left;
+
+	@include adaptiveValue("font-size", 15, 13, 0, 573, 375);
+
+	&--accent {
+		color: $accent-interactive;
+
+		@include adaptiveValue("font-size", 16, 13, 0, 573, 375);
+		@include adaptiveValue("line-height", 24, 19, 0, 573, 375);
+	}
+
+	&--label {
+		@include adaptiveValue("font-size", 13, 11, 0, 573, 375);
+		@include adaptiveValue("line-height", 19, 16, 0, 573, 375);
+	}
+
+
+}
+
+@media (prefers-color-scheme: dark) {}
+
+//=============== Interactive Elements ===============//
+
+.search {
+
+	// Зупинився на курсорі
+	//  cursor: ; 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 15px;
+
+	box-shadow: 0px 16px 30px -10px rgba(70, 96, 187, 0.2);
+	background: $background;
+
+	@include adaptiveValue("gap", 24, 7, 0, 573, 375);
+	@include adaptiveValue("padding-top", 17, 13, 0, 573, 375);
+	@include adaptiveValue("padding-bottom", 17, 13, 0, 573, 375);
+	@include adaptiveValue("padding-right", 10, 7, 0, 573, 375);
+	@include adaptiveValue("padding-left", 32, 16, 0, 573, 375);
+
+	img {
+		@include adaptiveValue("width", 24, 20, 0, 573, 375);
+	}
+}
+
+// src\components\forms\input\input.scss
+// src\components\forms\button\button.scss
+
+.error-message {
+	color: #f74646;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 22px;
+
+	white-space: nowrap;
+}
+
+//=============== Dark Theme ===============//
+
+@media (prefers-color-scheme: dark) {}
+
+.dark-theme {}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
